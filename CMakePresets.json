@@ -1,0 +1,78 @@
+{
+    "version": 4,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 5,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "main",
+            "displayName": "Main",
+            "binaryDir": "${sourceDir}/build",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_BUILD_TYPE": "release"
+            }
+        },
+        {
+            "name": "debug",
+            "displayName": "Debug",
+            "inherits": [
+                "main"
+            ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "displayName": "Release",
+            "inherits": [
+                "main"
+            ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "main-debug",
+            "displayName": "Main Debug",
+            "configurePreset": "main",
+            "configuration": "Debug"
+        },
+        {
+            "name": "main-release",
+            "displayName": "Main Release",
+            "configurePreset": "main",
+            "configuration": "Release"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "main-debug",
+            "displayName": "Main Debug",
+            "configurePreset": "main",
+            "configuration": "Debug",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "timeout": 200,
+                "jobs": 8
+            }
+        },
+        {
+            "name": "main-release",
+            "displayName": "Main Release",
+            "inherits": [
+                "main-debug"
+            ],
+            "configuration": "Release"
+        }
+    ]
+}

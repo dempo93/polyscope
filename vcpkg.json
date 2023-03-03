@@ -1,0 +1,16 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "name": "polyscope",
+    "version-string": "1",
+    "dependencies": [
+        "args",
+        "glad",
+        "glfw3",
+        "glm",
+        "happly",
+        "imgui",
+        "nlohmann-json",
+        "stb"
+    ],
+    "builtin-baseline": "64fabc9401d9296273ed67cd8c39f92c113f9ea5"
+}
