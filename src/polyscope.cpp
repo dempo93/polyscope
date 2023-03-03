@@ -535,7 +535,7 @@ void buildPolyscopeGui() {
   render::engine->buildEngineGui();
 
   // Debug options tree
-  ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+  ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
   if (ImGui::TreeNode("Debug")) {
     if (ImGui::Button("Force refresh")) {
       refresh();
@@ -580,7 +580,7 @@ void buildStructureGui() {
                                     // identically-named labels
 
     // Build the structure's UI
-    ImGui::SetNextTreeNodeOpen(structureMap.size() > 0, ImGuiCond_FirstUseEver);
+    ImGui::SetNextItemOpen(structureMap.size() > 0, ImGuiCond_FirstUseEver);
     if (ImGui::CollapsingHeader((catName + " (" + std::to_string(structureMap.size()) + ")").c_str())) {
       // Draw shared GUI elements for all instances of the structure
       if (structureMap.size() > 0) {
@@ -588,7 +588,7 @@ void buildStructureGui() {
       }
 
       for (auto x : structureMap) {
-        ImGui::SetNextTreeNodeOpen(structureMap.size() <= 8,
+        ImGui::SetNextItemOpen(structureMap.size() <= 8,
                                    ImGuiCond_FirstUseEver); // closed by default if more than 8
         x.second->buildUI();
       }

@@ -576,10 +576,10 @@ void setCameraFromJson(std::string jsonData, bool flyTo) {
 
 void buildViewGui() {
 
-  ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+  ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
   if (openSlicePlaneMenu) {
     // need to recursively open this tree node to respect slice plane menu open flag
-    ImGui::SetNextTreeNodeOpen(true);
+    ImGui::SetNextItemOpen(true);
   }
   if (ImGui::TreeNode("View")) {
 
@@ -712,7 +712,7 @@ void buildViewGui() {
     }
 
 
-    ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+    ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
     if (ImGui::TreeNode("Camera Parameters")) {
 
       // Field of view

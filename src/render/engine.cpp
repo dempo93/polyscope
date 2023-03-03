@@ -146,7 +146,7 @@ ShaderProgram::ShaderProgram(const std::vector<ShaderStageSpecification>& stages
 
 void Engine::buildEngineGui() {
 
-  ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+  ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
   if (ImGui::TreeNode("Appearance")) {
 
     // == Display
@@ -166,7 +166,7 @@ void Engine::buildEngineGui() {
     ImGui::ColorEdit4("background color", (float*)&view::bgColor, ImGuiColorEditFlags_NoInputs);
 
     // == Transparency
-    ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+    ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
     if (ImGui::TreeNode("Transparency")) {
 
       if (ImGui::BeginCombo("Mode", modeName(transparencyMode).c_str())) {
@@ -206,7 +206,7 @@ void Engine::buildEngineGui() {
     // == Ground plane
     groundPlane.buildGui();
 
-    ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+    ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
     if (ImGui::TreeNode("Tone Mapping")) {
       ImGui::SliderFloat("exposure", &exposure, 0.1, 2.0, "%.3f",
                          ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoRoundToFormat);
@@ -219,7 +219,7 @@ void Engine::buildEngineGui() {
     }
 
     // == Anti-aliasing
-    ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+    ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
     if (ImGui::TreeNode("Anti-Aliasing")) {
       if (ImGui::InputInt("SSAA (pretty)", &ssaaFactor, 1)) {
         ssaaFactor = std::min(ssaaFactor, 4);
@@ -231,10 +231,10 @@ void Engine::buildEngineGui() {
     }
 
     // == Materials
-    ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+    ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
     if (ImGui::TreeNode("Materials")) {
 
-      ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+      ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
       if (ImGui::TreeNode("Load material")) {
 
         size_t buffLen = 512;
@@ -266,7 +266,7 @@ void Engine::buildEngineGui() {
     // == Color maps
     if (ImGui::TreeNode("Color Maps")) {
 
-      ImGui::SetNextTreeNodeOpen(false, ImGuiCond_FirstUseEver);
+      ImGui::SetNextItemOpen(false, ImGuiCond_FirstUseEver);
       if (ImGui::TreeNode("Load color map")) {
 
         size_t buffLen = 512;
