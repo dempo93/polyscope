@@ -16,7 +16,7 @@
 
 #include "args/args.hxx"
 #include "happly.h"
-#include "json/json.hpp"
+#include "nlohmann/json.hpp"
 
 #include "simple_dot_mesh_parser.h"
 
