@@ -9,7 +9,7 @@ find_package(args CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
-
+find_path(HAPPLY_INCLUDE_DIRS "happly.h")
 find_package(imgui CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
@@ -176,9 +176,7 @@ add_definitions(-DNOMINMAX)
 
 target_link_libraries(polyscope PRIVATE glad::glad glm::glm glfw taywee::args imgui::imgui nlohmann_json::nlohmann_json)
 
-# find_path(HAPPLY_INCLUDE_DIRS "happly.h")
-# target_include_directories(polyscope PRIVATE ${HAPPLY_INCLUDE_DIRS})
-target_include_directories(polyscope PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
+target_include_directories(polyscope PRIVATE ${HAPPLY_INCLUDE_DIRS} "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
 
 target_compile_definitions(polyscope PUBLIC POLYSCOPE_BACKEND_OPENGL3_GLFW_ENABLED NOMINMAX)
 
