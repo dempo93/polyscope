@@ -8,7 +8,13 @@
         "glfw3",
         "glm",
         "happly",
-        "imgui",
+        {
+            "name": "imgui",
+            "features": [
+                "glfw-binding",
+                "opengl3-binding"
+            ]
+        },
         "nlohmann-json",
         "stb",
         "gtest"

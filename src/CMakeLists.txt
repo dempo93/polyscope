@@ -14,6 +14,86 @@ find_path(HAPPLY_INCLUDE_DIRS "happly.h")
 find_package(imgui CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
+list(APPEND BACKEND_SRCS render/opengl/gl_engine.cpp render/mock_opengl/mock_gl_engine.cpp)
+
+# Configure the render backend
+if("${POLYSCOPE_BACKEND_OPENGL3_GLFW}")
+    message("Polyscope backend openGL3_glfw enabled")
+
+    list(
+        APPEND
+        BACKEND_SRCS
+        render/opengl/gl_engine.cpp
+        render/opengl/shaders/texture_draw_shaders.cpp
+        render/opengl/shaders/lighting_shaders.cpp
+        render/opengl/shaders/ground_plane_shaders.cpp
+        render/opengl/shaders/gizmo_shaders.cpp
+        render/opengl/shaders/histogram_shaders.cpp
+        render/opengl/shaders/surface_mesh_shaders.cpp
+        render/opengl/shaders/volume_mesh_shaders.cpp
+        render/opengl/shaders/vector_shaders.cpp
+        render/opengl/shaders/sphere_shaders.cpp
+        render/opengl/shaders/ribbon_shaders.cpp
+        render/opengl/shaders/cylinder_shaders.cpp
+        render/opengl/shaders/rules.cpp
+        render/opengl/shaders/common.cpp)
+
+    list(APPEND BACKEND_HEADERS ${INCLUDE_ROOT}render/opengl/gl_engine.h ${INCLUDE_ROOT}render/opengl/shaders/common.h)
+
+    # Link settings
+    list(APPEND BACKEND_LIBS glfw glad::glad)
+
+    if(APPLE)
+        # On macOS, get openGL & friends from Frameworks; do not use GLAD at all
+
+        # NOTE: This code is essentially duplicated here and in deps/imgui/CMakeLists.txt
+
+        # Apple is playing hardball and deprecating openGL... we'll cross that bridge when we come to it
+        # Silence warnings about openGL deprecation
+        add_definitions(-DGL_SILENCE_DEPRECATION)
+
+        find_library(cocoa_library Cocoa)
+        find_library(opengl_library OpenGL)
+        find_library(corevideo_library CoreVideo)
+        find_library(iokit_library IOKit)
+        list(APPEND BACKEND_LIBS ${cocoa_library} ${opengl_library} ${corevideo_library} ${iokit_library})
+    else()
+        # On Windows/Linux, use the glad openGL loader
+
+        list(APPEND BACKEND_LIBS glad::glad)
+    endif()
+
+    list(APPEND BACKEND_DEFINITIONS POLYSCOPE_BACKEND_OPENGL3_GLFW_ENABLED)
+
+endif()
+
+if("${POLYSCOPE_BACKEND_OPENGL_MOCK}")
+    message("Polyscope backend openGL_mock enabled")
+
+    list(
+        APPEND
+        BACKEND_SRCS
+        render/mock_opengl/mock_gl_engine.cpp
+        render/opengl/shaders/texture_draw_shaders.cpp
+        render/opengl/shaders/lighting_shaders.cpp
+        render/opengl/shaders/ground_plane_shaders.cpp
+        render/opengl/shaders/gizmo_shaders.cpp
+        render/opengl/shaders/histogram_shaders.cpp
+        render/opengl/shaders/surface_mesh_shaders.cpp
+        render/opengl/shaders/volume_mesh_shaders.cpp
+        render/opengl/shaders/vector_shaders.cpp
+        render/opengl/shaders/sphere_shaders.cpp
+        render/opengl/shaders/ribbon_shaders.cpp
+        render/opengl/shaders/cylinder_shaders.cpp
+        render/opengl/shaders/rules.cpp
+        render/opengl/shaders/common.cpp)
+
+    list(APPEND BACKEND_HEADERS ${INCLUDE_ROOT}render/mock_opengl/mock_gl_engine.h
+         ${INCLUDE_ROOT}render/opengl/shaders/common.h)
+
+    list(APPEND BACKEND_DEFINITIONS POLYSCOPE_BACKEND_OPENGL_MOCK_ENABLED)
+endif()
+
 set(SRCS
     # Core functionality
     polyscope.cpp
@@ -79,6 +159,7 @@ set(SRCS
     trace_vector_field.cpp
     ribbon_artist.cpp
     image_scalar_artist.cpp
+    stbi_impl.cpp
     # Embedded binary data
     render/bindata/bindata_font_lato_regular.cpp
     render/bindata/bindata_font_cousine_regular.cpp
@@ -164,19 +245,18 @@ set(HEADERS
 
 # Create a single library for the project
 add_library(polyscope STATIC)
-target_sources(polyscope PUBLIC ${HEADERS} ${SRCS})
+target_sources(polyscope PUBLIC ${HEADERS} ${SRCS} ${BACKEND_HEADERS} ${BACKEND_SRCS})
 
 # Required compiler settings
 set_property(TARGET polyscope PROPERTY CXX_STANDARD 11)
 set_property(TARGET polyscope PROPERTY CXX_STANDARD_REQUIRED TRUE)
 set_target_properties(polyscope PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 
-target_link_libraries(polyscope PUBLIC glad::glad glm::glm glfw taywee::args imgui::imgui nlohmann_json::nlohmann_json)
+target_link_libraries(polyscope PUBLIC ${BACKEND_LIBS} glm::glm taywee::args imgui::imgui nlohmann_json::nlohmann_json)
 
 target_include_directories(polyscope PUBLIC ${HAPPLY_INCLUDE_DIRS} ${Stb_INCLUDE_DIR} "${CMAKE_SOURCE_DIR}/include/")
 
-target_compile_definitions(polyscope PUBLIC POLYSCOPE_BACKEND_OPENGL3_GLFW_ENABLED NOMINMAX STB_IMAGE_IMPLEMENTATION
-                                            STB_IMAGE_WRITE_IMPLEMENTATION)
+target_compile_definitions(polyscope PUBLIC NOMINMAX ${BACKEND_DEFINITIONS})
 
 add_library(polyscope-interface INTERFACE)
 target_link_libraries(polyscope-interface INTERFACE polyscope)
