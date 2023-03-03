@@ -2,33 +2,34 @@
     "version": 4,
     "cmakeMinimumRequired": {
         "major": 3,
-        "minor": 5,
+        "minor": 23,
         "patch": 0
     },
     "configurePresets": [
         {
             "name": "main",
             "displayName": "Main",
-            "binaryDir": "${sourceDir}/build",
             "hidden": true,
+            "binaryDir": "${sourceDir}/build",
+            "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
             "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
                 "VCPKG_BUILD_TYPE": "release"
             }
         },
         {
-            "name": "debug",
-            "displayName": "Debug",
+            "name": "main-debug",
+            "displayName": "Main Debug",
             "inherits": [
                 "main"
             ],
             "cacheVariables": {
+                "BUILD_TESTING": true,
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
-            "name": "release",
-            "displayName": "Release",
+            "name": "main-release",
+            "displayName": "Main Release",
             "inherits": [
                 "main"
             ],
@@ -39,23 +40,33 @@
     ],
     "buildPresets": [
         {
+            "name": "main",
+            "jobs": 16
+        },
+        {
             "name": "main-debug",
             "displayName": "Main Debug",
-            "configurePreset": "main",
-            "configuration": "Debug"
+            "configurePreset": "main-debug",
+            "configuration": "Debug",
+            "inherits": [
+                "main"
+            ]
         },
         {
             "name": "main-release",
             "displayName": "Main Release",
-            "configurePreset": "main",
-            "configuration": "Release"
+            "configurePreset": "main-release",
+            "configuration": "Release",
+            "inherits": [
+                "main"
+            ]
         }
     ],
     "testPresets": [
         {
             "name": "main-debug",
             "displayName": "Main Debug",
-            "configurePreset": "main",
+            "configurePreset": "main-debug",
             "configuration": "Debug",
             "output": {
                 "outputOnFailure": true

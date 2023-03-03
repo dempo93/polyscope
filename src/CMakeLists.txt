@@ -9,6 +9,7 @@ find_package(args CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
+find_package(Stb REQUIRED)
 find_path(HAPPLY_INCLUDE_DIRS "happly.h")
 find_package(imgui CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
@@ -162,24 +163,24 @@ set(HEADERS
     ${INCLUDE_ROOT}/volume_mesh_quantity.h)
 
 # Create a single library for the project
-add_library(polyscope ${HEADERS} ${SRCS})
-
-# Mark the library target and its headers as installable
-install(TARGETS polyscope)
-install(FILES ${HEADERS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/polyscope")
+add_library(polyscope STATIC)
+target_sources(polyscope PUBLIC ${HEADERS} ${SRCS})
 
 # Required compiler settings
 set_property(TARGET polyscope PROPERTY CXX_STANDARD 11)
 set_property(TARGET polyscope PROPERTY CXX_STANDARD_REQUIRED TRUE)
 set_target_properties(polyscope PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
-add_definitions(-DNOMINMAX)
 
-target_link_libraries(polyscope PRIVATE glad::glad glm::glm glfw taywee::args imgui::imgui nlohmann_json::nlohmann_json)
+target_link_libraries(polyscope PUBLIC glad::glad glm::glm glfw taywee::args imgui::imgui nlohmann_json::nlohmann_json)
 
-target_include_directories(polyscope PRIVATE ${HAPPLY_INCLUDE_DIRS} "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
+target_include_directories(polyscope PUBLIC ${HAPPLY_INCLUDE_DIRS} ${Stb_INCLUDE_DIR} "${CMAKE_SOURCE_DIR}/include/")
 
-target_compile_definitions(polyscope PUBLIC POLYSCOPE_BACKEND_OPENGL3_GLFW_ENABLED NOMINMAX)
+target_compile_definitions(polyscope PUBLIC POLYSCOPE_BACKEND_OPENGL3_GLFW_ENABLED NOMINMAX STB_IMAGE_IMPLEMENTATION
+                                            STB_IMAGE_WRITE_IMPLEMENTATION)
 
-# Link settings
-target_link_libraries(polyscope PUBLIC imgui)
-target_link_libraries(polyscope PRIVATE "${BACKEND_LIBS}" stb)
+add_library(polyscope-interface INTERFACE)
+target_link_libraries(polyscope-interface INTERFACE polyscope)
+
+# Mark the library target and its headers as installable
+install(TARGETS polyscope)
+install(FILES ${HEADERS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/polyscope")

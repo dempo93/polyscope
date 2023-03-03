@@ -10,7 +10,8 @@
         "happly",
         "imgui",
         "nlohmann-json",
-        "stb"
+        "stb",
+        "gtest"
     ],
     "builtin-baseline": "64fabc9401d9296273ed67cd8c39f92c113f9ea5"
 }
