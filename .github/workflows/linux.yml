@@ -3,8 +3,8 @@ name: linux
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  # pull_request:
+    # branches: [ master ]
 
 env:
   VCPKG_ROOT: /usr/local/share/vcpkg
