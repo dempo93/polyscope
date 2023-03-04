@@ -244,7 +244,7 @@ set(HEADERS
     ${INCLUDE_ROOT}/volume_mesh_quantity.h)
 
 # Create a single library for the project
-add_library(polyscope STATIC)
+add_library(polyscope)
 target_sources(polyscope PUBLIC ${HEADERS} ${SRCS} ${BACKEND_HEADERS} ${BACKEND_SRCS})
 
 # Required compiler settings
