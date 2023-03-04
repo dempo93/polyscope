@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  VCPKG_ROOT: ${{ env.VCPKG_INSTALLATION_ROOT }}
+
 jobs:
   build:
     strategy:
