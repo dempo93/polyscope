@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10...3.22)
+cmake_minimum_required(VERSION 3.14)
 
 project(polyscope)
 
@@ -8,10 +8,6 @@ option(BUILD_EXAMPLES "Build examples" off)
 option(POLYSCOPE_BACKEND_OPENGL3_GLFW "Build opengl glfw backend" on)
 option(POLYSCOPE_BACKEND_OPENGL_MOCK "Build opengl mock backend" on)
 
-### Policy settings
-cmake_policy(SET CMP0054 NEW)   # don't implicitly dereference inside if()
-
-### Add things for this project
 add_subdirectory(src)
 
 if(BUILD_TESTING)
@@ -19,5 +15,8 @@ if(BUILD_TESTING)
 endif()
 
 if(BUILD_EXAMPLES)
+    if(NOT POLYSCOPE_BACKEND_OPENGL3_GLFW)
+        message(FATAL_ERROR "BUILD_EXAMPLES needs POLYSCOPE_BACKEND_OPENGL3_GLFW")
+    endif()
     add_subdirectory(examples)
 endif()
