@@ -42,13 +42,28 @@ jobs:
         submodules: true
 
     - name: install packages
-      run: sudo apt-get update && sudo apt-get install -y xorg-dev libglu1-mesa-dev xpra xserver-xorg-video-dummy freeglut3-dev
+      run: |
+        sudo apt-get update      && \ 
+        sudo apt-get install -y     \
+          xorg-dev                  \
+          libglu1-mesa-dev          \
+          xpra                      \
+          xserver-xorg-video-dummy  \
+          freeglut3-dev             \
+          git                       \
+          curl                      \    
+          zip                       \
+          unzip                     \
+          tar                       \
+          pkg-config             && \
+        git clone --branch master https://github.com/microsoft/vcpkg.git /vcpkg && \
+        /vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
     - name: configure
-      run: cd test && mkdir build && cd build && cmake -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Debug -DPOLYSCOPE_BACKEND_OPENGL3_GLFW=ON -DPOLYSCOPE_BACKEND_OPENGL_MOCK=ON ..
+      run: cmake  -S. --preset=main-github
 
     - name: build
-      run: cd test/build && make
+      run: cmake --build ./build
 
     - name: run test
-      run: cd test/build && ./bin/polyscope-test --gtest_catch_exceptions=0 backend=openGL_mock
+      run: ./build/test/polyscope-test --gtest_catch_exceptions=0 backend=openGL_mock

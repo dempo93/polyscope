@@ -37,11 +37,23 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
+        },
+        {
+            "name": "main-github",
+            "displayName": "Main Github",
+            "inherits": [
+                "main-release"
+            ],
+            "cacheVariables": {
+                "BUILD_TESTING": true
+            }
         }
     ],
     "buildPresets": [
         {
             "name": "main",
+            "hidden": true,
+            "configurePreset": "main",
             "jobs": 16
         },
         {
@@ -61,30 +73,15 @@
             "inherits": [
                 "main"
             ]
-        }
-    ],
-    "testPresets": [
-        {
-            "name": "main-debug",
-            "displayName": "Main Debug",
-            "configurePreset": "main-debug",
-            "configuration": "Debug",
-            "output": {
-                "outputOnFailure": true
-            },
-            "execution": {
-                "noTestsAction": "error",
-                "timeout": 200,
-                "jobs": 8
-            }
         },
         {
-            "name": "main-release",
-            "displayName": "Main Release",
+            "name": "main-github",
+            "displayName": "Main Github",
+            "configurePreset": "main-github",
+            "targets":["polyscope-test"],
             "inherits": [
-                "main-debug"
-            ],
-            "configuration": "Release"
+                "main-release"
+            ]
         }
     ]
 }
