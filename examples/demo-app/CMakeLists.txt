@@ -1,12 +1,3 @@
-cmake_minimum_required(VERSION 2.8.9...3.22)
-
-project(polyscope-demo-app)
-
-# Maybe stop from CMAKEing in the wrong place
-if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
-    message(FATAL_ERROR "Source and build directories cannot be the same. Go use the /build directory.")
-endif()
-
 ### Configure output locations
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -19,7 +10,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STR
   # using Clang (linux or apple) or GCC
   message("Using clang/gcc compiler flags")
   SET(BASE_CXX_FLAGS "-std=c++11 -Wall -Wextra -Werror -g3")
-  SET(DISABLED_WARNINGS " -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-deprecated-declarations -Wno-missing-braces")
+  SET(DISABLED_WARNINGS " -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-deprecated-declarations -Wno-missing-braces -Wno-nonnull")
   SET(TRACE_INCLUDES " -H -Wno-error=unused-command-line-argument")
 
   if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
@@ -65,19 +56,11 @@ else()
   message( FATAL_ERROR "Unrecognized compiler [${CMAKE_CXX_COMPILER_ID}]" )
 endif()
 
-# Add polyscope
-add_subdirectory(../../ "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
-
 # Create an executable
 add_executable(
-        polyscopedemo
+        polyscope-demo
         demo_app.cpp
         simple_dot_mesh_parser.cpp
         )
 
-target_include_directories(polyscopedemo PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/args")
-target_include_directories(polyscopedemo PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/json/include")
-target_include_directories(polyscopedemo PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/happly")
-target_include_directories(polyscopedemo PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
-
-target_link_libraries(polyscopedemo polyscope)
+target_link_libraries(polyscope-demo PRIVATE polyscope)

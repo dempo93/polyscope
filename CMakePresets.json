@@ -24,6 +24,7 @@
             ],
             "cacheVariables": {
                 "BUILD_TESTING": true,
+                "BUILD_EXAMPLES": true,
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },

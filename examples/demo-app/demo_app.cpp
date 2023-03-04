@@ -14,7 +14,7 @@
 #include <unordered_set>
 #include <utility>
 
-#include "args/args.hxx"
+#include "args.hxx"
 #include "happly.h"
 #include "nlohmann/json.hpp"
 
