@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: setup
-      run: git -C $VCPKG_ROOT pull
+      run: git -C $VCPKG_ROOT reset --hard  && git -C $VCPKG_ROOT pull
 
     - name: configure
       run: cmake  -S. --preset=main-github -DCMAKE_C_COMPILER=$(which cc) -DCMAKE_CXX_COMPILER=$(which c++) -DCMAKE_MAKE_PROGRAM=$(which make)
@@ -35,7 +35,7 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: setup
-      run: git -C $VCPKG_ROOT pull
+      run: git -C $VCPKG_ROOT reset --hard  && git -C $VCPKG_ROOT pull
 
     - name: configure
       run: cmake  -S. --preset=main-github -DBUILD_SHARED_LIBS=on -DCMAKE_C_COMPILER=$(which cc) -DCMAKE_CXX_COMPILER=$(which c++) -DCMAKE_MAKE_PROGRAM=$(which make)
