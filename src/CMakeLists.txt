@@ -248,18 +248,17 @@ add_library(polyscope STATIC)
 target_sources(polyscope PUBLIC ${HEADERS} ${SRCS} ${BACKEND_HEADERS} ${BACKEND_SRCS})
 
 # Required compiler settings
-set_property(TARGET polyscope PROPERTY CXX_STANDARD 11)
-set_property(TARGET polyscope PROPERTY CXX_STANDARD_REQUIRED TRUE)
-set_target_properties(polyscope PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
+set_target_properties(
+    polyscope
+    PROPERTIES POSITION_INDEPENDENT_CODE TRUE
+               CXX_STANDARD 11
+               CXX_STANDARD_REQUIRED TRUE)
 
 target_link_libraries(polyscope PUBLIC ${BACKEND_LIBS} glm::glm taywee::args imgui::imgui nlohmann_json::nlohmann_json)
 
 target_include_directories(polyscope PUBLIC ${HAPPLY_INCLUDE_DIRS} ${Stb_INCLUDE_DIR} "${CMAKE_SOURCE_DIR}/include/")
 
 target_compile_definitions(polyscope PUBLIC NOMINMAX ${BACKEND_DEFINITIONS})
-
-add_library(polyscope-interface INTERFACE)
-target_link_libraries(polyscope-interface INTERFACE polyscope)
 
 # Mark the library target and its headers as installable
 install(TARGETS polyscope)

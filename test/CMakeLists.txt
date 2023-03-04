@@ -65,4 +65,4 @@ set(TEST_SRCS include/polyscope_test.h src/main_test.cpp src/array_adaptors_test
 find_package(GTest CONFIG REQUIRED)
 add_executable(polyscope-test "${TEST_SRCS}")
 target_include_directories(polyscope-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(polyscope-test PRIVATE GTest::gtest_main polyscope-interface)
+target_link_libraries(polyscope-test PRIVATE GTest::gtest_main polyscope)
