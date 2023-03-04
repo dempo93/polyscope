@@ -3,8 +3,8 @@ name: linux
 on:
   push:
     branches: [ master ]
-  # pull_request:
-    # branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 env:
   VCPKG_ROOT: /usr/local/share/vcpkg
@@ -31,7 +31,7 @@ jobs:
         git -C $VCPKG_ROOT reset --hard  && git -C $VCPKG_ROOT pull           
 
     - name: configure
-      run: cmake  -S. --preset=main-github -DCMAKE_C_COMPILER=$(which cc) -DCMAKE_CXX_COMPILER=$(which c++) -DCMAKE_MAKE_PROGRAM=$(which make)
+      run: cmake -S. --preset=main-github -DVCPKG_TARGET_TRIPLET=x64-linux-release -DCMAKE_C_COMPILER=$(which cc) -DCMAKE_CXX_COMPILER=$(which c++) -DCMAKE_MAKE_PROGRAM=$(which make)
 
     - name: build
       run: cmake --build ./build
@@ -60,7 +60,7 @@ jobs:
         git -C $VCPKG_ROOT reset --hard  && git -C $VCPKG_ROOT pull       
 
     - name: configure
-      run: cmake  -S. --preset=main-github -DBUILD_SHARED_LIBS=on -DCMAKE_C_COMPILER=$(which cc) -DCMAKE_CXX_COMPILER=$(which c++) -DCMAKE_MAKE_PROGRAM=$(which make)
+      run: cmake -S. --preset=main-github -DVCPKG_TARGET_TRIPLET=x64-linux-release -DBUILD_SHARED_LIBS=on -DCMAKE_C_COMPILER=$(which cc) -DCMAKE_CXX_COMPILER=$(which c++) -DCMAKE_MAKE_PROGRAM=$(which make)
 
     - name: build
       run: cmake --build ./build

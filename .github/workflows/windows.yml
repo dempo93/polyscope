@@ -20,7 +20,7 @@ jobs:
       run: git -C $env:VCPKG_ROOT pull
 
     - name: configure
-      run: cmake  -S. --preset=main-github
+      run: cmake -S. --preset=main-github -DVCPKG_TARGET_TRIPLET=x64-windows-release
 
     - name: build
       run: cmake --build ./build
